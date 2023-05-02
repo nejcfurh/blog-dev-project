@@ -1,0 +1,18 @@
+<!-- Challenge 7 -->
+<%- include("partials/header") %>
+
+<h1>COMPOSE</h1>
+
+<form method="POST" action="/compose">
+    <div class="form-group">
+      <label for="exampleFormControlInput1">TITLE</label>
+      <input type="text" class="form-control" id="exampleFormControlInput1" name="title" placeholder="Input post title...">
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlTextarea1">POST</label>
+      <textarea class="form-control" name="post" rows="5" placeholder="Enter your text..."></textarea>
+    </div>
+    <button class="btn btn-primary" type="submit" name="button">Publish</button>
+  </form>
+
+<%- include("partials/footer") %>
