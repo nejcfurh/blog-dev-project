@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const _ = require('lodash');
 const mongoose = require('mongoose');
+const { status } = require('express/lib/response');
 
 const username = require(__dirname + "/auth.js").username;
 const password = require(__dirname + "/auth.js").password;
@@ -23,7 +24,7 @@ const app = express();
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect(`mongodb+srv://${username}:${password}@cluster0.aoaflww.mongodb.net/?retryWrites=true&w=majority"`, {useNewUrlParser: true})
+  await mongoose.connect(`mongodb+srv://${username}:${password}@cluster0.aoaflww.mongodb.net/`, {useNewUrlParser: true})
 }
 
 app.set('view engine', 'ejs');
@@ -38,6 +39,8 @@ const postSchema = new mongoose.Schema({
 
 const Post = mongoose.model("Post", postSchema);
 
+// Get posts from DB
+
 app.get("/", async function(req, res) {
   try {
     const posts = await Post.find({});
@@ -50,13 +53,19 @@ app.get("/", async function(req, res) {
   }
 });
 
+// Contact page
+
 app.get('/contact', (req, res) => {
   res.render('contact', { contact: contactContent });
 });
 
+// About page
+
 app.get('/about', (req, res) => {
   res.render('about', { about: aboutContent });
 });
+
+// Compose posts
 
 app.get('/compose', (req, res) => {
   res.render('compose');
@@ -67,10 +76,18 @@ app.post("/compose", (req, res) => {
     title: req.body.title,
     content: req.body.post,
   })
+  
   post.save()
-  .then(() => {console.log("Post saved successfully!")}).catch(err => {res.status(400).send("Unable to save post to database due to:", err.message)});;
-  res.redirect('/')
+  .then(() => {
+    console.log("Post saved successfully!");
+    res.redirect('/');
+  })
+  .catch(err => {
+    res.status(500).send("Unable to save post to database due to: " + err.message);
+  });
 })
+
+// Read posts
 
 app.get('/posts/:postId', (req, res) => {
   const requestedPostId = (req.params.postId);
@@ -79,6 +96,8 @@ app.get('/posts/:postId', (req, res) => {
     res.render("post", {title: foundPost.title, content: foundPost.content});
   })
 });
+
+// Delete posts
 
 
 app.listen(3000, function () {
