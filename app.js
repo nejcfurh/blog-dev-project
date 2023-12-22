@@ -23,7 +23,7 @@ const app = express();
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect(`mongodb+srv://${username}:${password}@cluster0.06chanb.mongodb.net/blogDB`, {useNewUrlParser: true})
+  await mongoose.connect(`mongodb+srv://${username}:${password}@cluster0.aoaflww.mongodb.net/?retryWrites=true&w=majority"`, {useNewUrlParser: true})
 }
 
 app.set('view engine', 'ejs');
