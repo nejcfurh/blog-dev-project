@@ -67,8 +67,9 @@ app.post("/compose", (req, res) => {
     title: req.body.title,
     content: req.body.post,
   })
-  post.save().then(() => console.log("Post saved successfully!")).catch(err => {res.status(400).send("Unable to save post to database!")});
-  res.redirect('/');
+  post.save()
+  .then(() => {console.log("Post saved successfully!")}).catch(err => {res.status(400).send("Unable to save post to database due to:", err.message)});;
+  res.redirect('/')
 })
 
 app.get('/posts/:postId', (req, res) => {
