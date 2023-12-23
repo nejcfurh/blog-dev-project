@@ -200,6 +200,17 @@ body {
     margin-top: 10px;
 }
 
+.read-more {
+  background-color: none;
+  padding: 5px;
+}
+
+.read-more:hover {
+  background-color:#cccccc82;
+  border: none;
+  border-radius:20px;
+}
+
   /* display as a list of cards */
 /* 
   .blog-post-flex-cards {

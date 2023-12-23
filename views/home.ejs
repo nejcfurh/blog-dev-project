@@ -24,7 +24,7 @@
             </div>
             <!-- change the subsrting to 150 if displayed as a list of cards-->
             <p class="paragraph-body-flex"> <%= post.content.substring(0, 160) + " ..." %> </p>
-            <a style="float: right" href="/posts/<%= post._id %>">
+            <a class="read-more" style="float: right" href="/posts/<%= post._id %>">
                 <span style="float: right;"> &#x2192; Read more</span>
             </a> 
             <!-- if displayed as a list of cards, uncomment the button -->
