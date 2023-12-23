@@ -7,23 +7,31 @@ const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const _ = require('lodash');
 const mongoose = require('mongoose');
+const client = require('@mailchimp/mailchimp_marketing');
 
 const username = require(__dirname + "/auth.js").username;
 const password = require(__dirname + "/auth.js").password;
 
 const homeStartingContent =
-  'Lacus vel facilisis volutpat est velit egestas dui id ornare. Semper auctor neque vitae tempus quam. Sit amet cursus sit amet dictum sit amet justo. Viverra tellus in hac habitasse. Imperdiet proin fermentum leo vel orci porta. Donec ultrices tincidunt arcu non sodales neque sodales ut. Mattis molestie a iaculis at erat pellentesque adipiscing. Magnis dis parturient montes nascetur ridiculus mus mauris vitae ultricies. Adipiscing elit ut aliquam purus sit amet luctus venenatis lectus. Ultrices vitae auctor eu augue ut lectus arcu bibendum at. Odio euismod lacinia at quis risus sed vulputate odio ut. Cursus mattis molestie a iaculis at erat pellentesque adipiscing.';
+  `This website was created under the guidance of Angela Yu and her Complete 2023 Web Development Bootcamp on Udemy. This mini project took us through using node modules, how to navigate MongoDB databases, collections and using the items in the collections and rendering them on the website using EmbeddedJS (EJS). 
+  
+  The back-end of the app is Express.JS, the database is MongoDB and front-end is EJS with Bootstrap. The Contact Form is done via MailChimp email as a proof of concept.`
+
 const aboutContent =
-  'This website was created under the guidance of Angela Yu and her "The Complete 2023 Web Development Bootcamp" on Udemy. This mini project took us through using node modules, how to navigate MongoDB databases, collections and using the items in the collections and rendering them on the website. Base of the app is Express.JS, database is MongoDB.';
-const contactContent =
-  'As the creator of the website and aspiring Junior Software Engineer I am open to any opportunities for cooperation and employment. Please do not hesitate to contact me directly via my email, or my social media.';
+  `I'm a passionate and dedicated Junior Software Engineer eager to contribute my skills and enthusiasm to innovative projects. 
+  
+  With a solid foundation in programming languages like JavaScript (EJS, jQuerry, Node.JS, React.JS), and HTML/CSS coupled with my hands-on experience in building web applications and exploring emerging technologies, I'm excited about the opportunity to collaborate and learn from experienced professionals in the field. 
+  
+  I am proactive, detail-oriented, and committed to continuous improvement.`
+
+const contactContent = "As the creator of the website and aspiring Junior Software Engineer I am open to any opportunities for cooperation and employment. Please do not hesitate to contact me directly via my email, or my social media - alternatively, you can fill the contact form below."
 
 const app = express();
 
 main().catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect(`mongodb+srv://${username}:${password}@cluster0.aoaflww.mongodb.net/`, {useNewUrlParser: true})
+  await mongoose.connect(`mongodb+srv://${username}:${password}@cluster0.aoaflww.mongodb.net/dailyJournal`, {useNewUrlParser: true})
 }
 
 app.set('view engine', 'ejs');
@@ -34,6 +42,9 @@ app.use(express.static('public'));
 const postSchema = new mongoose.Schema({
   title: String,
   content: String,
+  date: Number,
+  author: String,
+  imageLink: String,
 })
 
 const Post = mongoose.model("Post", postSchema);
@@ -74,11 +85,16 @@ app.post("/compose", (req, res) => {
   const post = new Post ({
     title: req.body.title,
     content: req.body.post,
+    date: Date.now(),
+    author: req.body.author,
+    imageLink: req.body.imageLink
   })
+
+  if(post.title === "" || post.content === "" || post.author === "") return console.log("Post cannot have an empty title or content!"), res.redirect("/")
   
   post.save()
   .then(() => {
-    console.log("Post saved successfully!", post.title);
+    console.log("Post saved successfully!", post.title, post.date);
     res.redirect('/');
   })
   .catch(err => {
@@ -92,7 +108,7 @@ app.get('/posts/:postId', (req, res) => {
   const requestedPostId = (req.params.postId);
   
   Post.findOne({_id: requestedPostId}).then((foundPost) => {
-    res.render("post", {title: foundPost.title, content: foundPost.content});
+    res.render("post", {title: foundPost.title, content: foundPost.content, author: foundPost.author, date: foundPost.date, imageLink: foundPost.imageLink});
   })
 });
 
@@ -114,6 +130,68 @@ app.get('/:postId', (req, res) => {
     console.error('Error deleting post:', error);
   });
 })
+
+// Email Contact Form
+
+app.post('/send-email', function (req, res) {
+  const name = req.body.name;
+  const subject = req.body.subject;
+  const email = req.body.email;
+  const message = req.body.message;
+
+  const data = {
+    members: [
+      {
+        email_address: email,
+        status: 'subscribed',
+        merge_fields: {
+          NAME: name,
+          SUBJECT: subject,
+          MESSAGE: message
+        },
+      },
+    ],
+  };
+
+  // Create JSON data
+
+  const jsonData = JSON.stringify(data);
+
+  // Magic of MailChimp
+
+  client.setConfig({
+    apiKey: 'a27e8e2e9d0186a1780916371d0dcca8-us13',
+    server: 'us13',
+  });
+
+  //Async function will send your data
+  const run = async () => {
+    const response = await client.lists.batchListMembers(
+      'b2abdb1c75',
+      jsonData
+    );
+
+    if (response.error_count === 0) {
+      res.sendFile(__dirname + '/views/success.html');
+    } else {
+      res.sendFile(__dirname + '/views/failure.html');
+    }
+  };
+  // Run the async function
+  run();
+});
+
+// Failure Try Again
+
+app.post('/failure', function (req, res) {
+    res.redirect('/contact')
+});
+
+// Success back to home
+
+app.post('/success', function (req, res) {
+  res.redirect('/contact')
+});
 
 // Server running
 

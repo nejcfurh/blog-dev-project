@@ -1,6 +1,14 @@
 <%- include("partials/header") %>
 
-    <h1> <%= title %> </h1>
-    <p> <%= content %> </p>
+<div style="text-align: center;">
+    <h1 class="post-title-name" style="margin-top: 20px"> <%= title.toUpperCase() %> </h1>
+    <span class="post-reading">
+        <h4 style="font-size:16px"> <%= author.toUpperCase() %> </h4> &nbsp; || &nbsp;
+        <h5> <%= new Date(date).toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric' }) %> </h5>
+    </span>
+    <hr>
+    <p class="paragraph-body"> <%= content %> </p>
+    <img class="post-image" src="<%=imageLink %>"/>
+</div>
     
 <%- include("partials/footer") %>

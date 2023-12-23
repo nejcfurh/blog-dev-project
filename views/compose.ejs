@@ -1,18 +1,26 @@
 <!-- Challenge 7 -->
 <%- include("partials/header") %>
 
-<h1>COMPOSE</h1>
+<h1 class="page-title">COMPOSE</h1>
 
 <form method="POST" action="/compose">
     <div class="form-group">
-      <label for="exampleFormControlInput1">TITLE</label>
-      <input type="text" class="form-control" id="exampleFormControlInput1" name="title" placeholder="Input the title of your daily journal post ...">
+      <label for="exampleFormControlInput1" style="font-size: 12px;">TITLE</label>
+      <input type="text" class="form-control" id="exampleFormControlInput1" name="title" placeholder="Input the title...">
     </div>
     <div class="form-group">
-      <label for="exampleFormControlTextarea1">POST</label>
-      <textarea class="form-control" name="post" rows="6" placeholder="Enter the body of your daily journal post ..."></textarea>
+      <label for="exampleFormControlAuthor1" style="font-size: 12px;">AUTHOR</label>
+      <input type="text" class="form-control" id="exampleFormControlInput1" name="author" placeholder="Input the name of the author...">
     </div>
-    <button class="btn btn-primary" type="submit" name="button">Publish</button>
+    <div class="form-group">
+      <label for="exampleFormControlTextarea1" style="font-size: 12px;">POST</label>
+      <textarea class="form-control" name="post" rows="6" placeholder="Input the content of your post..."></textarea>
+    </div>
+    <div class="form-group">
+      <label for="exampleFormControlInput1" style="font-size: 12px;">IMAGE</label>
+      <input type="text" class="form-control" id="exampleFormControlInput1" name="imageLink" placeholder="Insert image link...">
+    </div>
+    <button class="btn btn-secondary" style="border: 0.5px solid gray" type="submit" name="button">Publish</button>
   </form>
 
 <%- include("partials/footer") %>

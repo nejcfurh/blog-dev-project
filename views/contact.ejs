@@ -1,37 +1,27 @@
 <%- include("partials/header") %>
 
-<h1>CONTACT ME</h1>
+<h1 class="page-title">CONTACT ME</h1>
 
 <p><%= contact %></p>
-
-    <h3>If you want to collaborate or get to know me better ...</h3>
-    <p class="paragraph-intro-end">
-      ... do not hesitate to reach me via email using the mail icon below or
-      connect with me on social media platforms!
-    </p>
-    <br />
-    <div>
-      <a class="icon-button" href="mailto:nejc.furh7@gmail.com">
-        <img
-          class="mail-icon"
-          src="https://cdn-icons-png.flaticon.com/512/666/666162.png"
-        />
-      </a>
-      <a class="footer-link" href="https://si.linkedin.com/in/nejcfurh">
-        <img
-          class="mail-icon"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/LinkedIn_icon.svg/2048px-LinkedIn_icon.svg.png"
-      /></a>
-      <a class="footer-link" href="https://twitter.com/nejcfurh">
-        <img
-          class="mail-icon"
-          src="https://upload.wikimedia.org/wikipedia/sco/9/9f/Twitter_bird_logo_2012.svg"
-      /></a>
-      <a class="footer-link" href="https://www.facebook.com/nejcfurh/"></a>
-        <img
-          class="mail-icon"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/2048px-2021_Facebook_icon.svg.png"
-      /></a>
-    </div>
+<hr>
+<form method="POST" action="/send-email">
+  <div class="form-group">
+    <label for="exampleFormControlInput1" style="font-size: 12px; margin-top: 10px;">NAME</label>
+    <input type="text" class="form-control" id="exampleFormControlInput1" name="name" placeholder="Name">
   </div>
+  <div class="form-group">
+    <label for="exampleFormControlInput1" style="font-size: 12px;">EMAIL</label>
+    <input type="text" class="form-control" id="exampleFormControlInput1" name="email" placeholder="Email address">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlAuthor1" style="font-size: 12px;">SUBJECT</label>
+    <input type="text" class="form-control" id="exampleFormControlInput1" name="subject" placeholder="Subject">
+  </div>
+  <div class="form-group">
+    <label for="exampleFormControlTextarea1" style="font-size: 12px;">MESSAGE</label>
+    <textarea class="form-control" name="message" rows="4" placeholder="Email message..."></textarea>
+  </div>
+  <button class="btn btn-secondary" style="border: 0.5px solid gray" type="submit" name="button-email">Send</button>
+</form>
+    
 <%- include("partials/footer") %>

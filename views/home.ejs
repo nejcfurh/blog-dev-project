@@ -1,12 +1,41 @@
 <%- include("partials/header") %>
 
-<h1>HOME</h1>
+<!-- <h1 class="initial-title">POSTS</h1> -->
 
-<p><%= home %></p>
+<p class="paragraph-body" style="margin-top: 20px"><i><%= home %></i></p>
+<div class="blog-posts-display">
+    <% posts.forEach(function(post) { %>
+        <% let date = new Date(post.date); %>
+        <% let formattedDate = date.toLocaleDateString('en-US', {year: 'numeric', month: 'long', day: 'numeric' }); %>
+        <hr class="post-inside-hr">
+        <div class="blog-post-flex">
+            <!-- change the substring to 40 if displayed as a list of cards -->
+                <span class="post-title-line">
+                    <h1 class="post-title-name">
+                         <a href="/posts/<%= post._id %>"><%= post.title.length > 45 ? post.title.substring(0, 45) + " ..." : post.title %></a> 
+                    </h1> 
+                     <div class="post-title-line">
+                        <p class="post-date"> 
+                            <strong><%= post.author.toUpperCase() %></strong>&nbsp; || &nbsp;<%= formattedDate %>
+                        </p>
+                    <!-- if displaed as a list of cards, comment this button -->
+                    <button class="post-delete" type="submit"><a href="/<%= post._id %>">🗑️</a></button>
+                </span>
+            </div>
+            <!-- change the subsrting to 150 if displayed as a list of cards-->
+            <p class="paragraph-body-flex"> <%= post.content.substring(0, 160) + " ..." %> </p>
+            <a style="float: right" href="/posts/<%= post._id %>">
+                <span style="float: right;"> &#x2192; Read more</span>
+            </a> 
+            <!-- if displayed as a list of cards, uncomment the button -->
+                <!-- <button class="post-delete" type="submit">
+                    <a href="/<%= post._id %>">🗑️</a>
+                </button> -->
+            <!-- if displayed as a list of cards comment <hr> -->
+        </div>
+    <% }) %>
+    <hr class="post-inside-hr">
+</div>
 
-<% posts.forEach(function(post) { %>
-    <span class="post-title"><h1> <%= post.title %> </h1> <button class="post-delete" type="submit"><a href="/<%= post._id %>">🗑️</a></button></span>
-    <p> <%= post.content.substring(0, 157) + " ..." %> <a href="/posts/<%= post._id %>">Read More</a> </p>
-<% }) %>
 
 <%- include("partials/footer") %>
