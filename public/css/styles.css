@@ -212,7 +212,7 @@ body {
 }
 
   /* display as a list of cards */
-/* 
+
   .blog-post-flex-cards {
     display: flex;
     flex-wrap: wrap;
@@ -283,4 +283,16 @@ body {
 
 .post-date-cards {
     padding-right: 0px;
-} */
+}
+
+.read-more-cards {
+  background-color: none;
+  padding: 5px;
+  margin-bottom: 10px;
+}
+
+.read-more-cards:hover {
+  background-color:#cccccc82;
+  border: none;
+  border-radius:20px;
+}
