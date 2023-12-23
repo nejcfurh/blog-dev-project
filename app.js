@@ -11,6 +11,7 @@ const client = require('@mailchimp/mailchimp_marketing');
 
 const username = require(__dirname + "/auth.js").username;
 const password = require(__dirname + "/auth.js").password;
+const mailchimpAPI = require(__dirname + "/auth.js").mailchimpAPI;
 
 const homeStartingContent =
   `This website was created under the guidance of Angela Yu and her Complete 2023 Web Development Bootcamp on Udemy. This mini project took us through using node modules, how to navigate MongoDB databases, collections and using the items in the collections and rendering them on the website using EmbeddedJS (EJS). 
@@ -160,7 +161,7 @@ app.post('/send-email', function (req, res) {
   // Magic of MailChimp
 
   client.setConfig({
-    apiKey: 'a27e8e2e9d0186a1780916371d0dcca8-us13',
+    apiKey: mailchimpAPI,
     server: 'us13',
   });
 
