@@ -7,7 +7,6 @@ const bodyParser = require('body-parser');
 const ejs = require('ejs');
 const _ = require('lodash');
 const mongoose = require('mongoose');
-const { status } = require('express/lib/response');
 
 const username = require(__dirname + "/auth.js").username;
 const password = require(__dirname + "/auth.js").password;
@@ -79,7 +78,7 @@ app.post("/compose", (req, res) => {
   
   post.save()
   .then(() => {
-    console.log("Post saved successfully!");
+    console.log("Post saved successfully!", post.title);
     res.redirect('/');
   })
   .catch(err => {
@@ -99,6 +98,24 @@ app.get('/posts/:postId', (req, res) => {
 
 // Delete posts
 
+app.get('/:postId', (req, res) => {
+  const postIdToDelete = req.params.postId
+
+  Post.findOneAndDelete({ _id: postIdToDelete })
+  .then(deletedPost => {
+    if (deletedPost) {
+      console.log('Post deleted successfully:', deletedPost.title);
+      return res.redirect('/')
+    } else {
+      console.log('Post not found or already deleted');
+    }
+  })
+  .catch(error => {
+    console.error('Error deleting post:', error);
+  });
+})
+
+// Server running
 
 app.listen(3000, function () {
   console.log('Server started on port 3000');

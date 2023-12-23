@@ -39,21 +39,30 @@
     padding-bottom: 10px;
   }
   
-  .footer-link {
+.footer-link {
     font-family: 'Montserrat', sans-serif;
     text-decoration: none;
-  }
+}
   
-  .icon-button {
+.icon-button {
     width: 10%;
     height: 10%;
-  }
+}
   
-  .mail-icon {
+.mail-icon {
     display: inline;
     width: 10%;
     height: 10%;
     margin: 0px 20px 0px 20px;
     cursor: pointer;
-  }
+}
   
+.post-title {
+  display: flex; 
+  justify-content: space-between
+}
+
+.post-delete {
+  background:none;
+  border:none;
+}
